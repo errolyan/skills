@@ -7,6 +7,8 @@
 ### 🎨 内容创作类
 - **ai-insights-daily** - AI动态洞察专栏生成器，为"AI拉呱"品牌生成高质量中文技术文章
 - **viral-article-creator** - 智能爆文创作工具，从原文翻译、调研到改写的全流程创作
+- **viral-article-rewriter** - 爆文改写器，将普通技术文章改写成高传播度的爆文风格
+- **video-script-writer** - 视频脚本写作工具，将技术文章批量改写为4-6分钟的知识类视频脚本
 - **technical-blog-writing** - 技术博客写作，结构化输出开发者内容
 - **doc-coauthoring** - 文档协作指南，帮助创建提案、技术规范等结构化内容
 
@@ -28,6 +30,7 @@
 - **algorithmic-art** - 使用 p5.js 创建算法艺术
 - **canvas-design** - 使用设计哲学创建精美的视觉艺术
 - **mcp-builder** - 创建高质量 MCP (Model Context Protocol) 服务器
+- **remotion** - Remotion 最佳实践，使用 React 创建视频内容
 
 ### 🎯 工具与效率类
 - **skill-creator** - 创建、修改和优化技能的工具
@@ -90,10 +93,13 @@
 ├── pdf/                        # PDF 处理
 ├── pdf-to-images/              # PDF 转图片
 ├── polymarket-trading-bot/     # Polymarket 复制交易机器人
+├── remotion/                   # Remotion 视频创建最佳实践
 ├── skill-creator/              # 技能创建器
 ├── slack-gif-creator/          # Slack GIF 创建
 ├── theme-factory/              # 主题工厂
+├── video-script-writer/        # 视频脚本写作
 ├── viral-article-creator/      # 爆文创作
+├── viral-article-rewriter/     # 爆文改写器
 ├── web-artifacts-builder/      # Web Artifacts 构建
 ├── webapp-testing/             # Web 应用测试
 ├── xlsx/                       # Excel 处理
@@ -196,4 +202,4 @@
 ---
 
 **最后更新**: 2026-03-10
-**技能数量**: 20+
+**技能数量**: 25+
