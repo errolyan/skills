@@ -1,0 +1,6 @@
+{
+  "eval_id": 1,
+  "eval_name": "daily-ai-news",
+  "prompt": "今天AI圈有什么新鲜事吗？帮我生成一篇每日洞察文章，保存到 /Users/mac/Desktop/blog/outputs/ 目录",
+  "assertions": []
+}

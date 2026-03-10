@@ -1,0 +1,6 @@
+{
+  "eval_id": 3,
+  "eval_name": "claude-gpt4-comparison",
+  "prompt": "帮我写一篇关于Claude和GPT-4最新对比的文章，最好能结合最近的更新和社区讨论。输出到 /Users/mac/Desktop/blog/outputs/",
+  "assertions": []
+}

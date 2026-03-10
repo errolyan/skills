@@ -1,0 +1,6 @@
+{
+  "eval_id": 2,
+  "eval_name": "github-trending-analysis",
+  "prompt": "我想了解一下最近GitHub上有什么火爆的AI开源项目，写一篇深度分析文章，要技术向但是接地气的那种。文件保存到 /Users/mac/Desktop/blog/outputs/",
+  "assertions": []
+}

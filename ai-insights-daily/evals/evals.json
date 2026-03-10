@@ -1,0 +1,23 @@
+{
+  "skill_name": "ai-insights-daily",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "今天AI圈有什么新鲜事吗？帮我生成一篇每日洞察文章，保存到 /Users/mac/Desktop/blog/outputs/ 目录",
+      "expected_output": "一篇完整的「AI拉呱」风格中文文章，包含：1）爆款标题，2）多平台资讯整合（WebSearch+GitHub+HuggingFace），3）深度洞察分析，4）本土化表达，5）互动钩子，6）保存为markdown文件到指定目录",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "我想了解一下最近GitHub上有什么火爆的AI开源项目，写一篇深度分析文章，要技术向但是接地气的那种。文件保存到 /Users/mac/Desktop/blog/outputs/",
+      "expected_output": "聚焦GitHub trending AI项目的深度分析文章，包含：1）项目技术原理大白话解读，2）应用场景分析，3）与竞品对比，4）开发者视角的实用价值，5）趋势洞察，文章风格符合「AI拉呱」品牌调性",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "帮我写一篇关于Claude和GPT-4最新对比的文章，最好能结合最近的更新和社区讨论。输出到 /Users/mac/Desktop/blog/outputs/",
+      "expected_output": "对比分析类文章，包含：1）两个模型的最新更新信息，2）多维度客观对比（性能/价格/应用场景），3）社区真实反馈，4）使用建议，5）行业趋势判断，风格吸引人且有深度",
+      "files": []
+    }
+  ]
+}
