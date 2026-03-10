@@ -45,6 +45,7 @@
 - **ai-image-generation** - 使用 FLUX、Gemini、Grok 等 50+ 模型生成 AI 图像
 
 ### 💰 金融工具类
+- **polymarket-trading-bot** - Polymarket 复制交易机器人，自动跟随成功交易者进行预测市场交易，支持盈利监控和仓位管理
 - **zt-selector** - A股涨停选股工具，基于6大规则筛选模拟盘标的（智能过滤、市盈率展示、红肥绿瘦检查）
 
 ### 📓 其他工具
@@ -88,6 +89,7 @@
 ├── notebooklm/                 # NotebookLM
 ├── pdf/                        # PDF 处理
 ├── pdf-to-images/              # PDF 转图片
+├── polymarket-trading-bot/     # Polymarket 复制交易机器人
 ├── skill-creator/              # 技能创建器
 ├── slack-gif-creator/          # Slack GIF 创建
 ├── theme-factory/              # 主题工厂
@@ -153,6 +155,9 @@
 ```bash
 # A股涨停选股（仅供娱乐）
 /zt-selector
+
+# Polymarket 复制交易（预测市场）
+/polymarket-trading-bot
 ```
 
 ## 🔧 技能开发
