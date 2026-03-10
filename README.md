@@ -45,7 +45,7 @@
 - **ai-image-generation** - 使用 FLUX、Gemini、Grok 等 50+ 模型生成 AI 图像
 
 ### 💰 金融工具类
-- **zt-selector** - A股涨停选股工具，基于5大规则筛选模拟盘标的（仅供娱乐）
+- **zt-selector** - A股涨停选股工具，基于6大规则筛选模拟盘标的（智能过滤、市盈率展示、红肥绿瘦检查）
 
 ### 📓 其他工具
 - **notebooklm** - Google NotebookLM 完整 API 访问

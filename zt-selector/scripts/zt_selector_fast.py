@@ -1,7 +1,20 @@
 #!/usr/bin/env python3
 """
-涨停敢死队选股工具 - 优化版
-优化策略：先从今日涨停池筛选，大幅提升速度
+涨停敢死队选股工具 - 优化版 v1.1.0
+
+优化策略：
+1. 先从今日涨停池筛选热门板块，大幅提升速度
+2. 智能过滤：科创板、ST、超大市值（>5000亿）
+3. 6大选股规则：
+   - K线上扬趋势（当前价 > MA5 > MA20）
+   - 近期强势表现（15日内有涨停）
+   - 近5日红肥绿瘦（上涨天数 > 下跌天数）
+   - 市盈率展示
+   - 板块共振效应（≥3只涨停）
+   - 大盘环境判断（MA5 vs MA10）
+4. 延迟加载全市场股票信息，避免重复查询
+
+仅供模拟盘娱乐使用，不构成投资建议
 """
 
 import akshare as ak
@@ -13,6 +26,21 @@ warnings.filterwarnings('ignore')
 class ZTSelectorFast:
     def __init__(self):
         self.today = datetime.now().strftime('%Y%m%d')
+        self.stock_info_cache = {}  # 缓存股票基本信息
+        self.all_stocks_df = None  # 缓存全市场股票数据
+
+    def load_all_stocks_info(self):
+        """一次性加载全市场股票信息（延迟加载）"""
+        if self.all_stocks_df is not None:
+            return
+
+        try:
+            print("   正在加载全市场股票基本信息...")
+            self.all_stocks_df = ak.stock_zh_a_spot_em()
+            print(f"   ✓ 已加载 {len(self.all_stocks_df)} 只股票信息")
+        except Exception as e:
+            print(f"   ⚠️  加载股票信息失败: {e}")
+            self.all_stocks_df = pd.DataFrame()
 
     def get_index_prediction(self):
         """分析上证指数"""
@@ -82,20 +110,74 @@ class ZTSelectorFast:
             ma20 = recent['收盘'].mean()
             current_price = recent['收盘'].iloc[-1]
 
-            # 判断上扬
-            uptrend = current_price > ma5 > ma10 > ma20
+            # 判断上扬：当前价 > MA5 > MA20 (放宽条件，不强制MA5>MA10>MA20)
+            uptrend = current_price > ma5 > ma20
 
             # 统计10日涨停次数
-            zt_count = int((recent.tail(10)['涨跌幅'] >= 9.9).sum())
+            recent_10 = recent.tail(10)
+            zt_count = int((recent_10['涨跌幅'] >= 9.9).sum())
 
-            return uptrend, {
+            # 检查近5日红肥绿瘦（上涨天数 > 下跌天数）
+            recent_5 = recent.tail(5)
+            up_days = (recent_5['涨跌幅'] > 0).sum()
+            down_days = (recent_5['涨跌幅'] < 0).sum()
+            red_fat_green_thin = up_days > down_days
+
+            return uptrend and red_fat_green_thin, {
                 'current': current_price,
                 'ma5': ma5,
                 'ma10': ma10,
-                'ma20': ma20
+                'ma20': ma20,
+                'up_days': up_days,
+                'down_days': down_days
             }, zt_count
         except Exception as e:
             return False, None, 0
+
+    def get_stock_basic_info(self, stock_code):
+        """获取股票基本信息（市值、市盈率）"""
+        if stock_code in self.stock_info_cache:
+            return self.stock_info_cache[stock_code]
+
+        try:
+            # 延迟加载全市场数据
+            if self.all_stocks_df is None:
+                self.load_all_stocks_info()
+
+            if self.all_stocks_df is None or len(self.all_stocks_df) == 0:
+                return None
+
+            stock_row = self.all_stocks_df[self.all_stocks_df['代码'] == stock_code]
+
+            if len(stock_row) == 0:
+                return None
+
+            info = {
+                'market_cap': stock_row.iloc[0].get('总市值', 0),  # 单位：亿元
+                'pe_ratio': stock_row.iloc[0].get('市盈率-动态', 0)
+            }
+
+            self.stock_info_cache[stock_code] = info
+            return info
+        except Exception as e:
+            return None
+
+    def filter_stock(self, stock_code, stock_name):
+        """过滤不符合条件的股票"""
+        # 1. 过滤科创板（688开头）
+        if stock_code.startswith('688'):
+            return False, "科创板"
+
+        # 2. 过滤ST股票
+        if 'ST' in stock_name:
+            return False, "ST股票"
+
+        # 3. 过滤大市值股票（>5000亿）
+        info = self.get_stock_basic_info(stock_code)
+        if info and info['market_cap'] > 5000:
+            return False, f"市值过大({info['market_cap']:.0f}亿)"
+
+        return True, None
 
     def select_stocks_fast(self, limit=20):
         """快速选股"""
@@ -142,11 +224,6 @@ class ZTSelectorFast:
             # 去重
             candidate_df = pd.DataFrame(candidate_pool).drop_duplicates(subset='代码')
 
-            # 过滤ST和价格为0
-            candidate_df = candidate_df[
-                ~candidate_df['名称'].str.contains('ST', na=False)
-            ]
-
             print(f"   热门板块股票池: {len(candidate_df)} 只")
         except Exception as e:
             print(f"❌ 获取板块股票失败: {e}")
@@ -164,11 +241,20 @@ class ZTSelectorFast:
 
             print(f"   [{i+1}/{total}] 检查 {stock_name}({stock_code})...", end='\r')
 
-            # 检查K线和涨停
+            # 第一步：过滤（科创板、ST、大市值）
+            is_valid, filter_reason = self.filter_stock(stock_code, stock_name)
+            if not is_valid:
+                continue
+
+            # 第二步：检查K线和涨停
             uptrend, ma_info, zt_count = self.check_uptrend_simple(stock_code)
 
             if not uptrend or zt_count == 0:
                 continue
+
+            # 第三步：获取市盈率
+            stock_info = self.get_stock_basic_info(stock_code)
+            pe_ratio = stock_info['pe_ratio'] if stock_info else 0
 
             # 符合条件
             candidates.append({
@@ -179,7 +265,9 @@ class ZTSelectorFast:
                 'MA5': round(ma_info['ma5'], 2),
                 'MA10': round(ma_info['ma10'], 2),
                 'MA20': round(ma_info['ma20'], 2),
-                '当前价': round(ma_info['current'], 2)
+                '当前价': round(ma_info['current'], 2),
+                '市盈率': round(pe_ratio, 2) if pe_ratio else '-',
+                '近5日': f"{ma_info['up_days']}涨{ma_info['down_days']}跌"
             })
 
             if len(candidates) >= limit:
@@ -211,14 +299,20 @@ class ZTSelectorFast:
 
         # 简单分析
         print("\n" + "="*60)
-        print("📈 数据分析:")
+        print("💡 模拟盘重点关注:")
+        top3 = result_df.head(3)
+        for idx, row in top3.iterrows():
+            print(f"   - {row['名称']}({row['代码']}) - 10日内{row['10日涨停次数']}次涨停，{row['行业']}板块")
+
+        print("\n📊 数据分析:")
         print(f"   平均涨停次数: {result_df['10日涨停次数'].mean():.1f} 次")
         print(f"   涉及板块: {result_df['行业'].nunique()} 个")
 
         print("\n⚠️  风险提示：")
-        print("   1. 本工具仅供模拟盘娱乐使用")
+        print("   1. 仅供模拟盘娱乐使用，不构成投资建议")
         print("   2. 股市有风险，投资需谨慎")
-        print("   3. 历史数据不代表未来表现")
+        if index_info and index_info['trend'] == "看跌":
+            print("   3. ⚠️  大盘今日MA5 < MA10，偏弱，尾盘操作需谨慎")
         print("   4. 14:30尾盘建议观察成交量和资金流向")
         print("="*60)
 
