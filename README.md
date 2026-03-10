@@ -44,6 +44,9 @@
 ### 🖼️ AI 图像生成
 - **ai-image-generation** - 使用 FLUX、Gemini、Grok 等 50+ 模型生成 AI 图像
 
+### 💰 金融工具类
+- **zt-selector** - A股涨停选股工具，基于5大规则筛选模拟盘标的（仅供娱乐）
+
 ### 📓 其他工具
 - **notebooklm** - Google NotebookLM 完整 API 访问
 
@@ -91,7 +94,8 @@
 ├── viral-article-creator/      # 爆文创作
 ├── web-artifacts-builder/      # Web Artifacts 构建
 ├── webapp-testing/             # Web 应用测试
-└── xlsx/                       # Excel 处理
+├── xlsx/                       # Excel 处理
+└── zt-selector/                # A股选股工具
 
 # 符号链接（指向全局技能）
 ├── ai-image-generation@ -> ../../.agents/skills/ai-image-generation
@@ -145,6 +149,12 @@
 /docx
 ```
 
+### 模拟盘玩家
+```bash
+# A股涨停选股（仅供娱乐）
+/zt-selector
+```
+
 ## 🔧 技能开发
 
 如果你想创建自己的技能：
@@ -181,4 +191,4 @@
 ---
 
 **最后更新**: 2026-03-10
-**技能数量**: 19+
+**技能数量**: 20+
