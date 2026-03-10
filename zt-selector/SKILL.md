@@ -1,11 +1,13 @@
 ---
 name: zt-selector
-description: A-share stock selection tool for simulated trading entertainment. Analyzes stocks using 5 key criteria including K-line trends, recent limit-up boards, sector momentum, and index analysis. Triggers when users mention limit-up stock selection, A-share stock picking, intraday trading stocks, end-of-day stock selection, or any variation of "涨停选股", "敢死队选股", "尾盘选股", "今日选股", or "zt-selector". Use this skill whenever users want to find potential A-share stocks to watch for simulated trading accounts, especially around 14:30 market close time.
+description: A-share stock selection and RSI analysis tool for simulated trading entertainment. Provides two core functions - (1) Stock selection using 6 key criteria including K-line trends, recent limit-up boards, sector momentum, and index analysis; (2) Dual RSI technical analysis for generating trading signals. Triggers when users mention limit-up stock selection, A-share stock picking, intraday trading, RSI analysis, technical signals, or any variation of "涨停选股", "敢死队选股", "尾盘选股", "今日选股", "RSI分析", "技术信号", or "zt-selector". Use this skill whenever users want to find potential A-share stocks or analyze trading signals for simulated accounts.
 ---
 
-# 涨停敢死队选股技能
+# 涨停敢死队选股技能 + 双RSI技术分析
 
-帮助用户基于akshare数据源进行A股模拟盘选股，使用5大规则筛选当日尾盘可关注的潜在标的。,执行时间为每个交易日的14:30开始寻找标的.
+帮助用户基于akshare数据源进行A股模拟盘选股和技术分析，提供两大核心功能：
+1. **涨停板选股** - 使用6大规则筛选当日尾盘可关注的潜在标的（执行时间为每个交易日的14:30开始）
+2. **双RSI信号分析** - 对股票进行RSI(13)和RSI(42)离散策略分析，生成做多/做空/观望信号
 
 ## 选股逻辑（6大规则）
 
@@ -17,10 +19,35 @@ description: A-share stock selection tool for simulated trading entertainment. A
 5. **板块共振效应** - 所属板块当日有3只以上涨停股票
 6. **大盘环境判断** - 上证指数技术面分析（MA5与MA10对比）
 
+## 双RSI技术分析（新功能）
+
+### RSI策略原理
+
+基于RSI(13)和RSI(42)的离散策略，通过观察两个RSI指标的差值来判断交易时机：
+
+**核心逻辑**：
+- **快速RSI**: 13周期（对价格变化更敏感）
+- **慢速RSI**: 42周期（趋势确认）
+- **差值阈值**: 日线级别为±16（比短周期的±20更严格）
+
+**交易信号**：
+- **做多信号** 🟢：两个RSI同时下降 + 快速RSI比慢速RSI低约16点
+- **做空信号** 🔴：两个RSI同时上升 + 快速RSI比慢速RSI高约16点
+- **观望** ⚪：其他情况
+
+**应用场景**：
+1. 对选股结果进行技术面验证
+2. 寻找短期交易机会
+3. 判断当前是否适合入场
+
 **未来规划**：
 - 基本面数据接口 - 财报数据接口（待实现）
+- 多周期RSI分析 - 支持分钟级和小时级周期
+- 回测功能 - 验证策略历史表现
 
 ## 工作流程
+
+### 功能一：涨停板选股
 
 ### 第一步：环境准备
 
@@ -138,4 +165,71 @@ MA5: 4106.90 | MA10: 4129.13
 
 ## 脚本文件位置
 
-核心选股脚本位于：`~/.claude/skills/zt-selector/scripts/zt_selector_fast.py`
+**涨停选股脚本**：`~/.claude/skills/zt-selector/scripts/zt_selector_fast.py`
+
+**RSI分析脚本**：
+- `~/.claude/skills/zt-selector/scripts/dual_rsi_strategy.py` - RSI策略核心
+- `~/.claude/skills/zt-selector/scripts/rsi_analyzer.py` - A股RSI分析器
+
+### 功能二：RSI技术分析
+
+#### 工作流程
+
+**第一步：获取RSI分析器**
+
+将RSI分析脚本复制到当前目录：
+
+```bash
+cp ~/.claude/skills/zt-selector/scripts/rsi_analyzer.py ./rsi_analyzer.py
+cp ~/.claude/skills/zt-selector/scripts/dual_rsi_strategy.py ./dual_rsi_strategy.py
+```
+
+**第二步：执行RSI分析**
+
+有两种使用方式：
+
+**方式1：分析选股结果**
+```bash
+# 对选股结果CSV进行RSI分析
+python rsi_analyzer.py 选股结果_20260310_143000.csv
+```
+
+**方式2：分析指定股票**
+```python
+# 直接运行（会分析示例股票）
+python rsi_analyzer.py
+```
+
+**第三步：查看RSI分析报告**
+
+脚本会输出：
+- 📊 信号分布统计
+- 🟢 做多信号的股票列表
+- 🔴 做空信号的股票列表
+- ⚪ 观望的股票列表
+- 💾 自动保存CSV结果文件
+
+#### 输出示例
+
+```
+📊 双RSI技术分析报告
+================================================================================
+
+信号分布:
+   做多: 3只
+   观望: 15只
+   做空: 2只
+
+🟢 做多信号 (3只):
+代码      名称        当前价  signal_text  rsi_fast  rsi_slow  rsi_diff  fast_trend  slow_trend
+600036  招商银行    35.24       做多       32.45     49.12    -16.67    falling     falling
+000001  平安银行    12.67       做多       28.33     45.01    -16.68    falling     falling
+
+💡 说明:
+   - RSI(13)和RSI(42)同时下降 + 差值约-16 → 做多信号
+   - RSI(13)和RSI(42)同时上升 + 差值约+16 → 做空信号
+   - 其他情况 → 观望
+   - 日线级别分析，建议结合其他指标综合判断
+```
+
+## 脚本文件位置（旧）
