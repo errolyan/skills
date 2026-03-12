@@ -12,6 +12,7 @@
 - **technical-blog-writing** - 技术博客写作，结构化输出开发者内容
 - **doc-coauthoring** - 文档协作指南，帮助创建提案、技术规范等结构化内容
 - **book-chapter-writer** - 技术书籍/教程章节写作工具，按五步流程输出大篇幅、含 Python 示例、举例丰富的中文章节
+- **paper-writer** - 学术/科研论文全流程写作工具，从文献检索到投稿就绪，支持中英日三语
 
 ### 📄 文档处理类
 - **pdf** - PDF 文件全功能处理（读取、合并、分割、转换、加密等）
@@ -44,6 +45,7 @@
 - **code-review-excellence** - 掌握有效的代码审查实践
 - **receiving-code-review** - 接收代码审查反馈的最佳实践
 - **internal-comms** - 内部沟通文档模板（状态报告、更新、FAQ 等）
+- **VibeSec-Skill** - 安全编码技能，从漏洞赏金猎人视角审查代码，涵盖 XSS、IDOR、SQL 注入等常见漏洞
 
 ### 🖼️ AI 图像生成
 - **ai-image-generation** - 使用 FLUX、Gemini、Grok 等 50+ 模型生成 AI 图像
@@ -92,6 +94,7 @@
 ├── internal-comms/             # 内部沟通
 ├── mcp-builder/                # MCP 构建器
 ├── notebooklm/                 # NotebookLM
+├── paper-writer/               # 学术论文写作
 ├── pdf/                        # PDF 处理
 ├── pdf-to-images/              # PDF 转图片
 ├── polymarket-trading-bot/     # Polymarket 复制交易机器人
@@ -103,6 +106,7 @@
 ├── viral-article-creator/      # 爆文创作
 ├── viral-article-rewriter/     # 爆文改写器
 ├── web-artifacts-builder/      # Web Artifacts 构建
+├── VibeSec-Skill/              # 安全编码技能
 ├── webapp-testing/             # Web 应用测试
 ├── xlsx/                       # Excel 处理
 └── zt-selector/                # A股选股工具
@@ -206,5 +210,5 @@
 
 ---
 
-**最后更新**: 2026-03-12
-**技能数量**: 26+
+**最后更新**: 2026-03-13
+**技能数量**: 28+
