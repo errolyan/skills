@@ -11,6 +11,7 @@
 - **video-script-writer** - 视频脚本写作工具，将技术文章批量改写为4-6分钟的知识类视频脚本
 - **technical-blog-writing** - 技术博客写作，结构化输出开发者内容
 - **doc-coauthoring** - 文档协作指南，帮助创建提案、技术规范等结构化内容
+- **book-chapter-writer** - 技术书籍/教程章节写作工具，按五步流程输出逻辑清晰、内容详实的中文章节
 
 ### 📄 文档处理类
 - **pdf** - PDF 文件全功能处理（读取、合并、分割、转换、加密等）
@@ -85,6 +86,7 @@
 ├── algorithmic-art/            # 算法艺术
 ├── brand-guidelines/           # 品牌指南
 ├── canvas-design/              # 画布设计
+├── book-chapter-writer/        # 技术书籍章节写作
 ├── doc-coauthoring/            # 文档协作
 ├── frontend-design/            # 前端设计
 ├── internal-comms/             # 内部沟通
@@ -128,6 +130,9 @@
 
 # 写技术博客
 /technical-blog-writing
+
+# 写书籍/教程章节
+/book-chapter-writer
 ```
 
 ### 开发者
@@ -201,5 +206,5 @@
 
 ---
 
-**最后更新**: 2026-03-10
-**技能数量**: 25+
+**最后更新**: 2026-03-12
+**技能数量**: 26+
