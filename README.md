@@ -6,6 +6,7 @@
 
 ### 🎨 内容创作类
 - **ai-insights-daily** - AI动态洞察专栏生成器，为"AI拉呱"品牌生成高质量中文技术文章
+- **ai-lagua-workflow** - AI拉呱文章自动化工作流，从英文原文到爆文和视频脚本的全流程处理（含Git提交）
 - **viral-article-creator** - 智能爆文创作工具，从原文翻译、调研到改写的全流程创作
 - **viral-article-rewriter** - 爆文改写器，将普通技术文章改写成高传播度的爆文风格
 - **video-script-writer** - 视频脚本写作工具，将技术文章批量改写为4-6分钟的知识类视频脚本
@@ -36,6 +37,7 @@
 
 ### 🎯 工具与效率类
 - **skill-creator** - 创建、修改和优化技能的工具
+- **decision-council** - 决策委员会，调用15位顶级思想家（马斯克、芒格、巴菲特等）从多维视角分析复杂决策
 - **theme-factory** - 为 artifacts 应用主题样式（幻灯片、文档、报告等）
 - **brand-guidelines** - 应用 Anthropic 官方品牌色彩和排版
 - **slack-gif-creator** - 创建适用于 Slack 的动画 GIF
@@ -85,9 +87,11 @@
 ├── agent-browser/               # 浏览器自动化
 ├── ai-insights-daily/          # AI 动态洞察生成器
 ├── ai-insights-daily-workspace/# AI 洞察工作区
+├── ai-lagua-workflow/          # AI拉呱文章自动化工作流
 ├── algorithmic-art/            # 算法艺术
 ├── brand-guidelines/           # 品牌指南
 ├── canvas-design/              # 画布设计
+├── decision-council/           # 决策委员会（15位顾问系统）
 ├── book-chapter-writer/        # 技术书籍章节写作
 ├── doc-coauthoring/            # 文档协作
 ├── frontend-design/            # 前端设计
@@ -210,5 +214,5 @@
 
 ---
 
-**最后更新**: 2026-03-13
-**技能数量**: 28+
+**最后更新**: 2026-03-19
+**技能数量**: 30+
